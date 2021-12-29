@@ -1,0 +1,60 @@
+{
+  "Geometry":[
+    {
+      "Type": "Sphere",
+      "PosX": 0,
+      "PosY": 0.5,
+      "PosZ": 0,
+      "Red": 123,
+      "Green": 155,
+      "Blue": 222,
+      "Radius": 1
+    },
+    {
+      "Type": "Sphere",
+      "PosX": 1,
+      "PosY": 4,
+      "PosZ": -1,
+      "Red": 111,
+      "Green": 55,
+      "Blue": 222,
+      "Radius": 1.5
+    },
+    {
+      "Type": "Cube",
+      "PosX": -2,
+      "PosY": 0,
+      "PosZ": -2,
+      "Red": 255,
+      "Green": 255,
+      "Blue": 0,
+      "SizeX": 1,
+      "SizeY": 1,
+      "SizeZ": 1
+    },
+    {
+      "Type": "Cube",
+      "PosX": 0,
+      "PosY": -1,
+      "PosZ": 0,
+      "Red": 222,
+      "Green": 222,
+      "Blue": 222,
+      "SizeX": 100,
+      "SizeY": 1,
+      "SizeZ": 100
+    },
+    {
+      "Type": "Cube",
+      "PosX": 2,
+      "PosY": 0,
+      "PosZ": 2,
+      "Red": 255,
+      "Green": 255,
+      "Blue": 0,
+      "SizeX": 1,
+      "SizeY": 1,
+      "SizeZ": 1
+    }
+  ]
+}

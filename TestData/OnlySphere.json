@@ -1,0 +1,14 @@
+{
+  "Geometry":[
+    {
+      "Type": "Sphere",
+      "PosX": 0.0,
+      "PosY": 0.0,
+      "PosZ": 0.0,
+      "Red": 255,
+      "Green": 255,
+      "Blue": 255,
+      "Radius": 1
+    }
+  ]
+}

@@ -1,0 +1,122 @@
+{
+  "Geometry":[
+    {
+      "Type": "Cube",
+      "PosX": 0.0,
+      "PosY": 0.0,
+      "PosZ": 0.0,
+      "Red": 255,
+      "Green": 255,
+      "Blue": 255,
+      "Radius": 2,
+      "SizeX": 2,
+      "SizeY": 2,
+      "SizeZ": 2
+    },
+    {
+      "Type": "Cube",
+      "PosX": 5.0,
+      "PosY": 0.0,
+      "PosZ": 0.0,
+      "Red": 255,
+      "Green": 255,
+      "Blue": 255,
+      "Radius": 1,
+      "SizeX": 1,
+      "SizeY": 1,
+      "SizeZ": 1
+    },
+    {
+      "Type": "Cube",
+      "PosX": -5.0,
+      "PosY": 0.0,
+      "PosZ": 0.0,
+      "Red": 255,
+      "Green": 255,
+      "Blue": 255,
+      "Radius": 1,
+      "SizeX": 1,
+      "SizeY": 1,
+      "SizeZ": 1
+    },
+    {
+      "Type": "Cube",
+      "PosX": 0.0,
+      "PosY": 0.0,
+      "PosZ": 5.0,
+      "Red": 255,
+      "Green": 255,
+      "Blue": 255,
+      "Radius": 1,
+      "SizeX": 1,
+      "SizeY": 1,
+      "SizeZ": 1
+    },
+    {
+      "Type": "Cube",
+      "PosX": 0.0,
+      "PosY": 0.0,
+      "PosZ": -5.0,
+      "Red": 255,
+      "Green": 255,
+      "Blue": 255,
+      "Radius": 1,
+      "SizeX": 1,
+      "SizeY": 1,
+      "SizeZ": 1
+    },
+    {
+      "Type": "Cube",
+      "PosX": -4.0,
+      "PosY": 0.0,
+      "PosZ": -4.0,
+      "Red": 255,
+      "Green": 255,
+      "Blue": 255,
+      "Radius": 1,
+      "SizeX": 1,
+      "SizeY": 1,
+      "SizeZ": 1
+    },
+    {
+      "Type": "Cube",
+      "PosX": 4.0,
+      "PosY": 0.0,
+      "PosZ": -4.0,
+      "Red": 255,
+      "Green": 255,
+      "Blue": 255,
+      "Radius": 1,
+      "SizeX": 1,
+      "SizeY": 1,
+      "SizeZ": 1
+    },
+    {
+      "Type": "Cube",
+      "PosX": 4.0,
+      "PosY": 0.0,
+      "PosZ": 4.0,
+      "Red": 255,
+      "Green": 255,
+      "Blue": 255,
+      "Radius": 1,
+      "SizeX": 1,
+      "SizeY": 1,
+      "SizeZ": 1
+    },
+    {
+      "Type": "Cube",
+      "PosX": -4.0,
+      "PosY": 0.0,
+      "PosZ": 4.0,
+      "Red": 255,
+      "Green": 255,
+      "Blue": 255,
+      "Radius": 1,
+      "SizeX": 1,
+      "SizeY": 1,
+      "SizeZ": 1
+    }
+
+  ]
+}
