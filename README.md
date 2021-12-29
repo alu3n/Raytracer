@@ -1,55 +1,58 @@
 # RayTracer
 ---
-## Zakladni informace
-* **Autor:** Vojtech Proschl
-* **Predmet:** NPGR031
-* **Termin:** Letni semestr 2021
+***IMPORTANT NOTE:*** Documentation utilizes LaTeX. For the best experience download readme.pdf
 
-**Hlavni zdroje pouzity pro reseni problemu**
+## Basic info
+* **Author:** Vojtech Proschl
+* **Course:** NPRG031
+* **Term:** Summer term 2021
+
+**Main resources**
 * [Fundamentals of Computer Graphics](https://www.amazon.com/Fundamentals-Computer-Graphics-Steve-Marschner/dp/1482229390)
 * [Linearni Algebra (nejen) pro Informatiky](https://matfyzpress.cz/cz/e-shop/vsechny-tituly/linearni-algebra-nejen-pro-informatiky-9788073783921)
 
-### Strucny popis programu
-Ucel tohoto programu je zprostredkovat moznost vykresleni 3D sceny sestavene z krychli a kouli. Uzivatel muze upravovat ruzne prametry sceny jako napriklad pozici kamery, jeji uhel, nebo treba intenzitu a bravu svetla. Program implementuje algoritmus sledovani paprsku (RayTracing).
+### Short describtion
+The goal of this program is to allow a user to render 3D scenes that are composed out of primitive objects. Users can adjust various parameters of the sceen that alter the appearance of the render. This project implements raytracing algorithm.
 
 ---
-## Uzivatelska dokumentace
-### Nastaveni sceny
+## User documentation
+### Scene settings
 **Camera**
-Position X,Y,Z - Pozice kamery v prostoru
-Rotation X,Y,Z - Rotace kamery kolem odpovidajicich os
-Lens Angle - Uhel zorneho pole kamery
-Projection Distance - Vzdalenost projekcni roviny od stredu kamery
+Position X,Y,Z - Position of the camera
+Rotation X,Y,Z - Rotation of the camera around X,Y,Z axis (canonical basis)
+Lens Angle - Field of View
+Projection Distance - Distance between projection plane and camera origin
 
 **Light**
-Ve scene jsou 3 svetla, nastaveni kazdeho je identicke.
-Position X,Y,Z - Pozice svetla v prostoru
-Specular R,G,B - Barva odlesku svetla
-Intensity - Intensita svetla
+There are 3 lights in the scene
+Position X,Y,Z - Position of the light
+Specular R,G,B - Specular highlight color
+Intensity - Intensity of the light
 
 **Render Settings**
-Resolution X,Y - Rozliseni vykresleneho obrazku
-Phong Exponent - Exponent mnozstvi odrazeneho svetla, vice informaci o Blinn-Phong modelu [zde](https://cs.wikipedia.org/wiki/Phong%C5%AFv_osv%C4%9Btlovac%C3%AD_model)
-Background R,G,B - Barva pozadi (mista, na kterych se nevyskytuje geometrie)
-Reflection Intensity - Odraz svetla je vynasoben timto cislem, 1 = 100% odrazeneho svetla, 0 = 0% odrazeneho svetla.
-Ray Cound - Pocet odrazu paprsku pro vypocet odlesku (1 je bez rekurzivniho volani), tento efekt zpomaluje rychlost vypoctu.
-Sample Size - Velikost mrizky pixelu, ze ktere se prumeruje barva vysledneho pixelu, 1 = 1x1 mrizka, 2 = 2x2 mrizka... Vyssi cisla sample size pomahaji s aliasingem a sumem ve scene. Tento efekt vyrazne zpomaluje rychlost vypoctu.
+Resolution X,Y - Resolution of the render
+Phong Exponent - [Info](https://en.wikipedia.org/wiki/Blinn–Phong_reflection_model)
+Background R,G,B - Color of the background
+Reflection Intensity - Ammount of the reflected light is multiplied by this number, 1 => 100% reflected light, 0 => 0% reflected light
+Ray Count - Reflection recursion depth
+Sample Size - Supersampling grid size, 1=>1x1, 2=>2x2... Useful for antialiasing but it is computationaly expenssive
 
 **Slider**
-Slouzi k zoomovani renderu.
+Zooming the render
 
 **Export**
-Otevre okno s moznosti ulozeni vysledku renderu. Vysledny render je ukladan v BMP formatu.
+Opens dialog window where you can save render
 
 **Load Primitives**
-Slouzi k importovani sceny, scena se uklada do JSON formatu a ma specificky format.
-Existuji dva druhy podporovanee geometrie
-* Cube - Krychle
-* Sphere - Koule
-Krychle se simuluje vyrazne pomaleji, vzhledem k tomu, ze je definovana pomoci mnoziny trojuhelniku v prostoru, tento vypocet je priblizne 16x pomalejsi nez v pripade koule.
+Its purpose is to import scenes into the render engine. The scene has to be in JSON and has to have the following syntax.
+There are 2 types of geometry currently supported
+* Cube
+* Sphere
 
-**Format vstupnich dat:**
-Format dat musi mit presne tuto strukturu, s tim, ze prvky v seznamu jsou pouze koule a krychle v libovolnem poradi, je mozno jich pridat libovolne mnozstvi. Soubor musi byt ve formatu JSON.
+Rendering box is way slower than rendering sphere because it's defined as polygonal geometry (set of triangles).
+
+**Input data format**
+Input has to have this exact structure. List elements have to be spheres and cubes. Other shapes can be easily added. You can add any ammount of those shapes.
 ```
 {
   "Geometry":[
@@ -79,183 +82,167 @@ Format dat musi mit presne tuto strukturu, s tim, ze prvky v seznamu jsou pouze 
 }
 
 ```
-Koule:
-* Type: Sphere - jiny typ neni mozno uvadet, pouze Sphere presne v tomto zneni
-* PosX - pozice na souradnici X, cislo ve formatu double
-* PosY - pozice na souradnici Y, cislo ve formatu double
-* PosZ - pozice na souradnici Z, cislo ve formatu double
-* Red - Hodnota RED v RGB modelu, cislo od 0 do 255
-* Green - Hodnota GREEN v RGB modelu, cislo od 0 do 255
-* Blue - Hodnota BLUE v RGB modelu, cislo od 0 do 255
-* Radius - Polomer koule
 
-Krychle:
-* Type: Cube - jiny typ neni mozno uvadet, pouze Cube presne v tomto zneni
-* PosX - pozice na souradnici X, cislo ve formatu double
-* PosY - pozice na souradnici Y, cislo ve formatu double
-* PosZ - pozice na souradnici Z, cislo ve formatu double
-* Red - Hodnota RED v RGB modelu, cislo od 0 do 255
-* Green - Hodnota GREEN v RGB modelu, cislo od 0 do 255
-* Blue - Hodnota BLUE v RGB modelu, cislo od 0 do 255
-* SizeX - velikost na souradnici X, cislo ve formatu double
-* SizeY - velikost na souradnici Y, cislo ve formatu double
-* SizeZ - velikost na souradnici Z, cislo ve formatu double
+**Sphere:**
+* Type: Sphere
+* PosX - double precission
+* PosY - double precission
+* PosZ - double precission
+* Red - 0 to 255 int
+* Green - 0 to 255 int
+* Blue - 0 to 255 int
+* Radius - double precission (positive)
+
+**Cube:**
+* Type: Cube
+* PosX - double precission
+* PosY - double precission
+* PosZ - double precission
+* Red - 0 to 255 int
+* Green - 0 to 255 int
+* Blue - 0 to 255 int
+* SizeX - double precission (positive)
+* SizeY - double precission (positive)
+* SizeZ - double precission (positive)
 
 ---
-## Programatorska dokumentace
-### Struktura programu
+## Programmer documentation
+### Program structure
 **RayTracer**
-RayTracer je hlavni trida programu, ktera spojuje uzivatelske rozhrani se scenou a jeji simulaci pomoci RayTracing algoritmu, ktery je ve tride simulace.
+RayTracer is the main class of the program. It connects the main user interface with scene and its simulation using the RayTracing algorithm which is in the simulation class.
 
 **Scena**
-Namespace **scene** zastituje veskere prvky, ktere hrajou roli ve vysledne simulaci, v aktualni podobe programu to jsou:
-* **Camera** - Kamera popsana atributy, na zaklade nich se generuji projekcni poloprimky
-* **Geometry** - Trida, ktera v sobe ma ulozene data geometrie, ktera se pri kroku 2. pouziva jako geometrie, se kterou hledame pruseciku (viz. Algoritmicka cast dokumentace)
-* **Light** - Trida, ktera je popsana atributy, na zaklade ni se pri shadingu pocita barva pixelu vysledneho obrazku
-* **Scene** - Tato trida slouzi jako container pro prvky simulace, je v ni kamera, ktera je pro kazdou scenu jedna, geometrie, ktera je rovnez pro scenu jedina a list svetel.
+Namespace scene includes all elements that are important in the simulation:
+
+* **Camera** - The camera is described with attributes. Projection rays are generated based on them as well.
+* **Geometry** - This class stores geometry
+* **Light** - This class stores attributes of light
+* **Scene** - This class serves as a container for scene elements (e.g. lights, camera...)
 
 
 
 **Render**
-Render je namespace, ktery v sobe ma tridy, ktere se staraji o cely proces RayTracingu. Vice o tomto procesu je v casti dokumentace o volbe algoritmu.
-* RayGeneration - Trida pro generovani projekcnich poloprimek
-* SphereIntersection - Trida pro vypocet pruseciku kouli
-* TriangleIntersection - Trida pro vypocet pruseciku trojuhelniku
-* ImprovedBlinnPhong - Trida pro vykreslovani pixelu podle BlinnPhong modelu
-* Simulation - Trida, ktera spojuje vsechny prvky simulace
+Render is namespace which contains classes that take care of RayTracing algorithm
+* RayGeneration 
+* SphereIntersection
+* TriangleIntersection
+* ImprovedBlinnPhong
+* Simulation
 
 **Utilities**
-Utilities je namespace, ktery v sobe ma ruzne typy reprezentace geometrie, coz je narozdil od objektu v namespacu scene primarne datova reprezentace a je prirazena geometrickemu objektu a ne scene.
-Dale tam je trida starajici se o import .json souboru, vice o ni v dalsi casti dokumentace.
-Posledni skupina trid jsou tridy z namespace interface, ktere se staraji o kontrolu predavani dat etc.
+Utilities is the namespace that contains various types of geometry representation (data representation). There is also a class responsible for reading input .json files and a class that is responsible for controling user input (GUI).
 
-**Uzivatelske rozhrani**
-Uzivatelske rozhrani je vytvoreno pomoci prvku WindowsFroms, komunikace s nim probiha pres tridu ***SceneSettings*** z namespace *Utilities/Interface*.
-Pokazde, kdyz uzivatel opusti policko, do ktereho pise, tak jsou informace ve SceneSettings aktualizovany, prochazi kontrolou a nasledne jsou predany odpovidajicim objektum ve tride ***scene***.
-Pri psani do policek probiha prubezna kontrola, aby uzivatel nemohl psat veci, ze kterych by vznikaly zbytecne bugy. Tuto kontrolu zprostredkovava trida ***InputHandler***.
-Pro oba vyse zminene procesy jsou vytvoreny eventy ve tride Form1.cs.
+**User interface**
+The user interface is created using WindowsForms. Class SceneSettings takes care of transfering parameters from GUI to the scene.
 
-Aktualni uzivatelske rozhrani podporuje pouze tri svetla, nicmene cely program je napsan tak, ze podporuje svetel libovolny pocet a staci rozsirit uzivatelske rozhrani.
+At the moment software supports only 3 lights (due to the fixed GUI). But software is built in such a way that you can easily add as many lights as you want.
 
-**Vstup a vystup**
-Jako vstup pro program slouzi .json data, ktere reprezentuji rozlozeni sceny a uzivatelske nastaveni svetel, kamery etc.
-Vystup programu je .BMP soubor s vykreslenym obrazkem.
-### Interpretace dat
-**Interni**
+**Input and outut**
+The input of the program is a .json file which represents the scene and GUI where the user can specify parameters of the simulation, lights etc.
+Output is .BMP file of the rendered image
+### Data interpretation
+**Internal**
 
 Scene
-Tato trida uchovava prvky, ktere hrajou roli v simulaci, samotna scena ma nejake parametry, ktere jsou pouzivany pri simulaci a jednotlive objekty, ktere jsou ulozene ve scene tzn. geometrie, svetla a kamera, maji vlastni parametry, ktere jsou pouzivany pri simulaci.
+Scene stores elements of the simulation such as geometry, lights, camera, etc. Those objects have their own parameters which are used during the simulation.
 
 Sphere
-Koule jakozto primitivni geometricky typ je reprezentovan pomoci parametru, kouli v prostoru definujeme pomoci pozice jejiho stredu, a jejiho polomeru, toto nam staci k jednoznacne definici koule.
+Parametricaly described geometry time using its origin and radius.
 
 Mesh
-Tento geometricky typ je komplexnejsi, je vytvoren z pole vertexu, ktere muzou byt ve vzajemne relaci, kdy tri vertexy tvori trojuhelnik. Kazdy trojuhelnik ma prirazeny svuj normal, coz je vektor, ktery je na nej kolmy. Normaly se pouzivaji pri procesu stinovani.
+Mesh is other possible representation, which is more complex than the sphere. It is composed out of vertex array which can form triangles. Each triangle has its normal (Support for vertex normals can be easily added).
 
 Cube
-Krychle je reprezentovana pomoci geometrickeho typu mesh, dokonce konstruktor tridy mesh slouzi primo pro vytvoreni krychle. Krychle se sklada ze 4 vertexu, 12 trianglu a knim prislusicich normalu.
-Krychle ma 6 stran, kazdou rozdelime na 2 triangly, aby byla jednoznacne, oboum trianglum priradime normal strany, ze ktere vznikly.
+Is made using the mesh geometry type. It is composed out of 8 vertices and 12 triangles.
 
-**Vstupni**
-Jako vstupni data slouzi jiz zminene uzivatelske rozhrani a hlavne .json soubor, ktery reprezentuje geometricke data.
-V namespace *Utilities/InputOutput* je trida, ktera slouzi jako .json parser
-
-Parser prochazi pres .json soubor pres hlavni pole, ve kterem jsou ulozeny jednotlive slovniky, v kazdem slovniku parser sleduje hodnoty, na zaklade kterych vytvari geometrii.
-* Type - Rozhodne zda se jedna o krychli nebo kouli
-* Red,Green,Blue - Jednotlive barvy, hodnota by mela byt v rozsahu 0-255 (byte)
-* PosX,PosY,PosZ - Pozice geometrie v prostoru
-* Radius - Pouze pro koule, jedna se o polomer koule
-* SizeX,SizeY,SizeZ - Pouze pro krychle, jedna se o rozmery krychle v osach X,Y,Z
-
-**Vystupni**
-Vystup programu je obrazek ve formatu .BMP, pri renderu se obrazek ulozi do tridy RayTracer, odkud je pri vyvolani eventu stisknuti export tlacitka ulozen do pocitace uzivatele.
+**Input & Output**
+Described in the user documentation
 
 
-### Volby algoritmu
+### Algorithm Choice
 **RayTracing**
-Sklada se ze tri zakladnich kroku
-* Computing view rays (Vytvareni poloprimek)
+Is made out of three basic steps
+* Computing view rays 
 
-* Ray-Geometry Intersection (Vypocet protnuti poloprimek a geometrie)
+* Ray-Geometry Intersection
 
-* Shading ("Stinovani" scene)
+* Shading
 
-Kazdy z techto kroku se pocita zvlast pro kazdy pixel.
-Generovani projekcnich poloprimek neni zavisla na ostatnich krocich, stejne tak vypocet pruseciku poloprimek a geometrie.
-Proces stinovani je zavisly na vypoctu pruseciku primek a geometrie, protoze pouziva rekurzivni volani na vypocet odlesku.
+Each step is computed independently for each pixel -> It's running parallel.
 
-Casove nejnakladnejsi proces je u RayTracingu krok 2, ten zabere pres 90% casu, je tedy nutne mu venovat zvysenou pozornost. V tomto programu jsou pro tento krok pouzity 2 metody, nejsou ovsem idealni a je mozne je v budoucnu vylepsit, viz. posledni cast dokumentace.
+The most time demmanding step is the second step (Ray-Geometry intersection). There is room form improvement (last part of the documentation).
 
-**Projekcni rovina**
-Projekcni rovina je rovina, podle ktere budeme generovat poloprimky, scena ma parametr, ktery urcuje jeji vzdalenost od pozice kamery. Jeji velikost je vypocitana na zaklade uhlu kamery a poctu pixelu v nastaveni renderu.
+**Projection plane**
+Intersection rays are generated based on the projection plane. Its size is calculated from the camera angle and pixel amount in the camera settings.
 
 **Computing view rays**
-Objekt kamery ma atribut rotace, kde je hodnota pro kazdou osu zvlast. Kamera ma k sobe prirazenou ortonormalni bazi, ta se pri procesu generovani paprsku nejprve zrotuje o pozadovany uhel postupne v kazde ose, cimz zustane baze stale ortonormalni. Projekcni rovina se rozdeli na pixely, mista, kde budeme generovat paprsky jsou jednotlive pixely na projekcni rovine.  Technicke detaily v [teto](https://www.amazon.com/Fundamentals-Computer-Graphics-Steve-Marschner/dp/1482229390) knize na strane 73.
+The camera object has rotation attributes (one for each axis). Based on those attributes we rotate the orthonormal basis of the camera (which stays ortonormal because rotation matrix is an orthonormal matrix and orthonormal times orthonormal is still orthonormal). We're creating projection plane with this new orthonormal basis. View rays are using the projection plane. 
 
 **Ray-Geometry intersection**
-V programu jsou pouzity dva ruzne algoritmy na vypocet pruseciku poloprimky s geometrii. Prvni slouzi ***pouze pro vypocet pruseciku koule a poloprimky***, ten pouziva analyticke vyjadreni primky a koule v prostoru a matematickou numerickou knihovnu. Druhy algoritmus ***pro vypocet pruseciku trojuhelniku a poloprimky***, jelikoz se da v grafice vyjadrit jakakoli geometrie jako mnozina trojuhelniku, tak je program teoreticky schopny vykreslit jakoukoli geometrii, nicmene vypocet pruseciku trojuhelniku je pomaly. Pocita se pomoci pruseciku poloprimky a parametricke rovinny a overeni, zda je prusecik v trojuhelniku se provadi pomoci barycentrickych souradnic. Technicke detaily v [teto](https://www.amazon.com/Fundamentals-Computer-Graphics-Steve-Marschner/dp/1482229390) knize na strane 76.
+There are 2 algorithms for the geometry intersection. The first one is ray sphere intersection and the second one is ray triangle intersection.
 
 **Shading**
-Posledni cast RayTracingu, v teto casti se vykresluje scena a pocita se barva pixelu na zaklade polohy scenickych objektu a nastaveni jejich parametru, vice o tomto procesu naleznete v [teto](https://www.amazon.com/Fundamentals-Computer-Graphics-Steve-Marschner/dp/1482229390) knize na strane 81. Nektere informace o shading modelech jsou rovnez popsany v nasledujici casti dokumentace.
+During this phase, we're computing appearance of the pixel. It's based on the attributes of the scene objects.
 
 **Pixel Sampling**
-Pixel sampling je v programu metoda, ktera je pouzita jako protivaha na [aliasing](https://cs.wikipedia.org/wiki/Aliasing), v pripade ze na obrazku je aliasing, tak pusobi "rozkostickovane". Reseni tohoto problemu je pixel sampling. Algoritmus RayTracingu se pocita pro kazdy pixel, zavedeme do nej parametr **SampleSize**, pokazde, kdyz je vypocitavan pixel, tak ho rozdelime na SampleSize*SampleSize podpixelu a misto pocitani jednoho pixelu vypocitame vsechny podpixely a jejich vyslednou hodnotu zprumerujem a vratime ji jako vysledek. Pixel sampling je pomerne nakladna technika, ale funguje velice dobre.
+Pixel sampling is used to improve the quality of the render by computing subpixels and averaging the resulting value. It can effectively remove aliasing.
 
 ### Shading modely
-**Obecny shading model**
-Shading model je algoritmus, ktery si vezme vysledky kroku 1 a 2 a na zaklade jejich vysledku vykresli pozadovany pixel.
-Ve scene je typicky vice svetel, takze je k tomu prizpusobeny model, a mame mnozinu svetel $\{L_1,...,L_n\}$, kde svetla maji (ne nutne) ruzne parametry. Nektere technicke detaily jsou take v [teto](https://www.amazon.com/Fundamentals-Computer-Graphics-Steve-Marschner/dp/1482229390)  knize, algoritmus je ale pro ucel tohoto programu mirne upraveny.
+**Basic shading model**
+It is an algorithm that takes results of the previous steps, lights, etc., and based on that computes the appearance of a pixel.
 
-**Parametry pro shading:**
-* Misto protnuti geometrie $p\in\mathbb{R}^3$
-* Normal geometrie v miste protnuti $n\in\mathbb{R}^3,||n||_2=1$, je kolmy na povrch v pruseciku.
-* Pozice kamery v prostoru $c\in\mathbb{R}^3$
-* Vzdalenost protnuti od kamery $d\in\mathbb{R}$
-* Barva protnute geometrie $C_G\in[255]^3$
-* Projekcni vektor $v\in\mathbb{R}^3,||v||_2=1$
-* Vektor od pruseciku ke svetlu $l\in\mathbb{R}^3,||l||_2=1$
+We usually have multiple lights in the scene and the shading model is adapted for that. Let's say we have a set of lights $\{L_1,...,L_n\}$, where the lights have (not necessarily) different parameters.
+
+**Shading parameters:**
+* Intersection location $p\in\mathbb{R}^3$
+* Normal of the intersected geometry in the place of intersection $n\in\mathbb{R}^3,||n||_2=1$
+* Camera location in space $c\in\mathbb{R}^3$
+* Distance between the camera and the intersection $d\in\mathbb{R}$
+* Color of the intersected geometry $C_G\in[255]^3$
+* Projection vector $v\in\mathbb{R}^3,||v||_2=1$
+* Vector pointing from intersection to the light $l\in\mathbb{R}^3,||l||_2=1$
 * Phong exponenet $P\in(0,+\infty)$
 
-**Parametry svetel**
-* Pozice svetla $L_p\in\mathbb{R}^3$
-* Intenzita svetla $L_I\in\mathbb{R}$
-* Specular barva svetla $C_S\in[255]^3$
+**Light parameters**
+* Light position $L_p\in\mathbb{R}^3$
+* Light intensity $L_I\in\mathbb{R}^+$
+* Light specular color $C_S\in[255]^3$
 
-**Algoritmus stinovani pixelu**
-Vychazi z Blinn-Phong modelu
-V teto casti se pocita barva pouze jednoho pixelu, nepouziva se pixel sampling a prumerovani hodnot nekolika pixelu, to je popsano v predchozi casti dokumentace.
+**Pixel shading algorithm**
+Based on the Blinn-Phong model
+During this phase, we compute the appearance of a single pixel.
 
-
-Tato cast algoritmu se stara o barvu pixelu bez odrazu svetla
+This part of the algorithm solves color without the light reflection
 * $C:=(0,0,0)^T$
 * foreach $L\in\{L_1,...,L_n\}$:
 	* $h:=||v+l||^{-1}\cdot(v+l)$
 	* $C:=C+L_I\cdot max(0,n^T\cdot l)\cdot C_G+L_I\cdot max(0,n^T\cdot h)\cdot C_S$
 * return $(max(C_1,255),max(C_2,255),max(C_3,255))$
 
-V programu je schopen algoritmus vykreslovat odrazy svetla, to lze zaridit pomerne trivialnim vylepsenim. Stinovacimu algoritmus ma navic parametr rekurzivni hloubky, ktery urcuje maximalni pocet odrazu, pokud je tento parametr nenulovy, tak navic po prvni casti algoritmu nastane druha cast
+Using trivial improvement we're able to add reflection to the algorithm. We will add a recursive call that computes the color of the pixel in the reflection direction. Variable recursion depth can be added easily.
 
-Intensita odrazu $I_R\in[0,1]$
+Reflection intensity $I_R\in[0,1]$
 
 * $r:=v-2(v^T\cdot n)n$
-* $parametry:=RayIntersection(r,p)$
-* $C:=C+I_R*PixelShade(parametry)$
+* $parameters:=RayIntersection(r,p)$
+* $C:=C+I_R*PixelShade(parameters)$
 
-V tomto algoritmu je vlastne $r$ smer, ze ktereho lidske oko vidi odraz a my timto procesem vypocitame hodnotu pixelu jakoby kamera byla na pozici protnuti a smer byl smer odrazu a nejaky nasobek teto barvy pricteme k vysledne barve.
-
-
-### Mozne budouci vylepseni
-**Prostorove datove struktury**
-Vzhledem ke zminovanemu problemu s rychlosti vypoctu pruseciku geometrie a poloprimek je treba nejakym zpusobem optimalizovat. 
-Jedno z moznych vylepseni by mohla byt implementace nejake prostorove vyhledavaci datove struktury, napriklad [Octree](https://en.wikipedia.org/wiki/Octree), tohle by mohlo vyrazne urychlit proces a umoznit renderovani komplexnejsi polygonalni geometrie v rozumnem case.
-
-**Vylepseni shading modelu**
-V budoucnu by bylo mozne pridat do aktualniho shading modelu nejake dalsi funkce, napriklad pruhlednost, lom svetla etc.
-
-Dalsi napad je pridani [environmentalnich  map](https://en.wikipedia.org/wiki/Reflection_mapping), rendery by pusobily vice realisticky a celkove by to ulehcilo proces osvetlovani.
-
-Mohlo by se hodit pridat vice typu svetel, aktualne je v programu pouze fixed point light.
+Variable $r$ is the direction from which the human eye (or the camera) sees reflection. 
 
 
-**Vice primitivnich teles**
-Program podporuje aktualne krychle a koule, mohlo by se hodit v budoucnu pridat dalsi telesa, napriklad zbyvajici platonicka telesa, torus etc.
+### Possible future improvements
+**Spatial Data Structures**
+Due to the mentioned problem with ray-triangle intersection speed it would be beneficial to group geometry spatialy and compute intersection based on bounding boxes. This could be achieved by implementing spatial search data structure such as [Octree](https://en.wikipedia.org/wiki/Octree). This should improve render speed dramaticaly.
+
+**Shading model improvement**
+It would be great to add new functions to the implemented shading model such as transparency, light refraction, etc.
+
+The addition of the [HDR env maps](https://en.wikipedia.org/wiki/Reflection_mapping) would be also beneficial. Using this the renders would look way more realistic and it would simplify the process of setting up lights.
+
+Adding different types of light would be also great (e.g. spotlight).
+
+
+**More complex geometry**
+At the moment program supports only cubes and spheres. Addition of new primitive shapes should be easy.
+
+There is support for polygonal geometry but there is a need to implement parsing of the geometry.
